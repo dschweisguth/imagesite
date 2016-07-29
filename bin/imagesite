@@ -1,0 +1,203 @@
+#!/usr/bin/env ruby
+require 'optparse'
+require 'fileutils'
+require 'image_science'
+require 'exifr'
+require 'xmp'
+require 'erubis'
+
+class ImageSite
+  def run
+    parse_options!
+    the_images = images
+    the_images.each { |image| image.write @options[:output_dir] }
+    indexes(the_images).each { |index| index.write @options[:output_dir] }
+  end
+
+  private
+
+  def parse_options!
+    @options = { columns: 4, rows: 10 }
+    parser = OptionParser.new do |op|
+      op.banner = "Usage: #{$0} -o OUTPUT_DIR file [...]"
+
+      op.on('-o OUTPUT_DIR', "Output directory") do |output_dir|
+        @options[:output_dir] = output_dir
+      end
+      op.on('-t TITLE', "Title") do |title|
+        @options[:title] = title
+      end
+
+      # -h and --help work by default, but implement them explicitly so they're
+      # documented
+      op.on("-h", "--help", "Prints this help") do
+        warn op.to_s
+        exit
+      end
+
+    end
+    begin
+      parser.parse!
+    rescue OptionParser::ParseError
+      abort parser.to_s
+    end
+    if !@options[:title]
+      abort_with_help parser, "Please specify a title with -t."
+    end
+    if !@options[:output_dir]
+      abort_with_help parser, "Please specify an output directory with -o."
+    end
+    if ARGV.empty?
+      abort_with_help parser, "Please specify one or more image files."
+    end
+    @options[:files] = ARGV
+  end
+
+  def abort_with_help(parser, message)
+    abort "#{message}\n#{parser}"
+  end
+
+  def images
+    images_per_page = @options[:rows] * @options[:columns]
+    @options[:files].map.with_index do |file, i|
+      Image.new file: file, number: i + 1,
+        index_number: i / images_per_page + 1,
+        image_count: @options[:files].length
+    end
+  end
+
+  def indexes(images)
+    images.
+    each_slice(@options[:columns] * @options[:rows]).
+    with_index.
+    map do |images_for_index, i|
+      Index.new(
+        number: i + 1,
+        images: images_for_index,
+        total_image_count: images.length,
+        rows: @options[:rows],
+        columns: @options[:columns],
+        title: @options[:title]
+      )
+    end
+  end
+
+  # TODO extract images_per_page
+
+end
+
+class Image
+  def initialize(file:, number:, index_number:, image_count:)
+    @file = file
+    @number = number
+    @index_number = index_number
+    @image_count = image_count
+  end
+
+  # TODO write image inside write_page, move thumbnail to index
+  def write(output_dir)
+    write_image output_dir
+    write_page output_dir
+    write_thumbnail output_dir
+  end
+
+  def title
+    xmp.dc.title.first
+  end
+
+  def description
+    exif.image_description&.gsub "\xE2\x80\xA8".force_encoding('ASCII-8BIT'), "<br/>\n"
+  end
+
+  def unqualified_page
+    "Pages/#{@number}.html"
+  end
+
+  def unqualified_thumbnail
+    "Thumbnails/#{@number}.jpeg"
+  end
+
+  private
+
+  def write_image(output_dir)
+    write_scaled_image output_dir, 'Images', 912
+  end
+
+  def write_page(output_dir)
+    Image.make_subdir output_dir, 'Pages'
+    bindings = {
+      number: @number,
+      index_number: @index_number,
+      image_count: @image_count,
+      title: title,
+      description: description,
+      tags: xmp.dc.subject
+    }
+    page = Erubis::Eruby.new(Image.page_template).result bindings
+    IO.write "#{output_dir}/#{unqualified_page}", page
+  end
+
+  def xmp
+    @xmp ||= XMP.parse exif
+  end
+
+  def exif
+    @exif ||= EXIFR::JPEG.new @file
+  end
+
+  def self.page_template
+    @page_template ||= IO.read 'etc/Page.html.erb'
+  end
+
+  def write_thumbnail(output_dir)
+    write_scaled_image output_dir, 'Thumbnails', 240
+  end
+
+  def write_scaled_image(output_dir, subdir, size)
+    Image.make_subdir output_dir, subdir
+    ImageScience.with_image @file do |image|
+      image.thumbnail size do |thumbnail|
+        thumbnail.save "#{output_dir}/#{subdir}/#{@number}.jpeg" # TODO use unqualified methods
+      end
+    end
+  end
+
+  def self.make_subdir(output_dir, subdir)
+    FileUtils.mkdir_p "#{output_dir}/#{subdir}"
+  end
+
+end
+
+class Index
+  def initialize(number:, images:, total_image_count:, columns:, rows:, title:)
+    @number = number
+    @images = images
+    @total_image_count = total_image_count
+    @columns = columns
+    @rows = rows
+    @title = title
+  end
+
+  def write(output_dir)
+    bindings = {
+      title: @title,
+      index_count: (@total_image_count + (@columns * @rows) - 1) / (@columns * @rows),
+      images: @images,
+      columns: @columns,
+      number: @number
+    }
+    page = Erubis::Eruby.new(Index.page_template).result bindings
+    IO.write "#{output_dir}/index#{if @number > 1 then @number end}.html", page
+  end
+
+  private
+
+  def self.page_template
+    @page_template ||= IO.read 'etc/index.html.erb'
+  end
+
+end
+
+if $0 == __FILE__
+  ImageSite.new.run
+end

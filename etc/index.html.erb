@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title><%= title %></title>
+  <style>
+    body {
+      background-color: white;
+      color: black;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    table {
+      width: 100%;
+      border-spacing: 2px;
+      border-collapse: separate;
+    }
+
+    td {
+      text-align: center;
+      width: <%= 100 / columns %>%;
+      padding: 2px;
+    }
+
+    img {
+      border: 0;
+      vertical-align: text-top;
+    }
+  </style>
+</head>
+<body>
+  <h1><%= title %></h1>
+  <% if index_count > 1 %>
+    <p>
+      <% (1..index_count).each do |other_index_number| %>
+        <% if other_index_number == number %>
+          Page <%= other_index_number %>
+        <% else %>
+          <a href="index<%= if other_index_number > 1 then other_index_number end %>.html">Page <%= other_index_number %></a>
+        <% end %>
+        <% if other_index_number < index_count %>|<% end %>
+      <% end %>
+    </p>
+  <% end %>
+  <table>
+    <% images.each_slice columns do |row| %>
+      <tr>
+        <% row.each do |image| %>
+          <td>
+            <a href="<%= image.unqualified_page %>"><img alt="<%= image.title %>" src="<%= image.unqualified_thumbnail %>"></a><br/>
+            <%= image.title %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
+</body>
+</html>

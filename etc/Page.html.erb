@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title><%= title %></title>
+  <style>
+    body {
+      background-color: white;
+      color: black;
+    }
+  </style>
+</head>
+<body>
+  <p>
+    <% if number > 1 %>
+    <a href="<%= number - 1 %>.html">&lt;--Previous</a>
+    &nbsp;&nbsp;
+    <% end %>					      
+    <a href="../index<%= if index_number > 1 then index_number end %>.html">Up</a>
+    <% if number < image_count %>
+    &nbsp;&nbsp;
+    <a href="<%= number + 1 %>.html">Next--&gt;</a>
+    <% end %>					      
+  </p>
+  <p><img alt="<%= title %>" src="../Images/<%= number %>.jpeg"/></p>
+  <h1><%= title %></h1>
+  <p><%= description %></p>
+  <% if tags.any? %>
+    <p>
+      <% tags.each do |tag| %>
+        <b><%= tag %></b>&nbsp;&nbsp;&nbsp;
+      <% end %>
+    </p>
+  <% end %>
+</body>
+</html>
