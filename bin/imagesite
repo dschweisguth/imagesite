@@ -1,10 +1,9 @@
 #!/usr/bin/env ruby
+require 'rubygems'
+require 'bundler/setup'
+Bundler.require(:default)
 require 'optparse'
 require 'fileutils'
-require 'image_science'
-require 'exifr'
-require 'xmp'
-require 'erubis'
 
 class ImageSite
   def run
