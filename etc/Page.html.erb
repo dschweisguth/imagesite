@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title><%= title %></title>
+  <title><%= image.title %></title>
   <style>
     body {
       background-color: white;
@@ -12,22 +12,22 @@
 </head>
 <body>
   <p>
-    <% if number > 1 %>
-    <a href="<%= number - 1 %>.html">&lt;--Previous</a>
+    <% if image.previous %>
+    <a href="<%= image.previous.number %>.html">&lt;--Previous</a>
     &nbsp;&nbsp;
     <% end %>					      
-    <a href="../index<%= if index_number > 1 then index_number end %>.html">Up</a>
-    <% if number < image_count %>
+    <a href="../<%= image.index.unqualified_page %>">Up</a>
+    <% if image.next %>
     &nbsp;&nbsp;
-    <a href="<%= number + 1 %>.html">Next--&gt;</a>
+    <a href="<%= image.next.number %>.html">Next--&gt;</a>
     <% end %>					      
   </p>
-  <p><img alt="<%= title %>" src="../Images/<%= number %>.jpeg"/></p>
-  <h1><%= title %></h1>
-  <p><%= description %></p>
-  <% if tags.any? %>
+  <p><img alt="<%= image.title %>" src="../<%= image.unqualified_image %>"/></p>
+  <h1><%= image.title %></h1>
+  <p><%= image.description %></p>
+  <% if image.tags.any? %>
     <p>
-      <% tags.each do |tag| %>
+      <% image.tags.each do |tag| %>
         <b><%= tag %></b>&nbsp;&nbsp;&nbsp;
       <% end %>
     </p>

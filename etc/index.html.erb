@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title><%= title %></title>
+  <title><%= options.title %></title>
   <style>
     body {
       background-color: white;
@@ -21,7 +21,7 @@
 
     td {
       text-align: center;
-      width: <%= 100 / columns %>%;
+      width: <%= 100 / options.columns %>%;
       padding: 2px;
     }
 
@@ -32,21 +32,21 @@
   </style>
 </head>
 <body>
-  <h1><%= title %></h1>
-  <% if index_count > 1 %>
+  <h1><%= options.title %></h1>
+  <% if index.indexes.length > 1 %>
     <p>
-      <% (1..index_count).each do |other_index_number| %>
-        <% if other_index_number == number %>
-          Page <%= other_index_number %>
+      <% index.indexes.each do |other_index| %>
+        <% if other_index == index %>
+          Page <%= other_index.number %>
         <% else %>
-          <a href="index<%= if other_index_number > 1 then other_index_number end %>.html">Page <%= other_index_number %></a>
+          <a href="<%= other_index.unqualified_page %>">Page <%= other_index.number %></a>
         <% end %>
-        <% if other_index_number < index_count %>|<% end %>
+        <% if other_index != index.indexes.last %>|<% end %>
       <% end %>
     </p>
   <% end %>
   <table>
-    <% images.each_slice columns do |row| %>
+    <% index.images.each_slice options.columns do |row| %>
       <tr>
         <% row.each do |image| %>
           <td>

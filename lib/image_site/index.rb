@@ -1,32 +1,58 @@
 require_relative 'image'
 
 module ImageSite
-  class Index
-    def initialize(number:, images:, total_image_count:, columns:, rows:, title:)
-      @number = number
-      @images = images
-      @total_image_count = total_image_count
-      @columns = columns
-      @rows = rows
-      @title = title
+  class Index < Model
+    def self.write_all(options)
+      images = Image.all options
+      indexes = all images, options
+      images.each(&:write)
+      indexes.each(&:write)
     end
 
-    def write(output_dir)
-      bindings = {
-        title: @title,
-        index_count: (@total_image_count + (@columns * @rows) - 1) / (@columns * @rows),
-        images: @images,
-        columns: @columns,
-        number: @number
-      }
-      page = Erubis::Eruby.new(Index.page_template).result bindings
-      IO.write "#{output_dir}/index#{if @number > 1 then @number end}.html", page
+    def self.all(images, options)
+      indexes =
+        images.
+        each_slice(options.columns * options.rows).
+        with_index(1).
+        map do |images_for_index, i|
+          Index.new(
+            number: i,
+            images: images_for_index,
+            options: options
+          )
+        end
+      indexes.each do |index|
+        index.indexes = indexes
+        index.images.each { |image| image.index = index }
+      end
+    end
+    private_class_method :all
+
+    attr_reader :images
+    attr_accessor :indexes
+
+    def initialize(number:, images:, options:)
+      super number, options
+      @images = images
+    end
+
+    def write
+      images.each(&:write_thumbnail)
+      write_html
+    end
+
+    def unqualified_page
+      "index#{if @number > 1 then @number end}.html"
     end
 
     private
 
     def self.page_template
       @page_template ||= IO.read 'etc/index.html.erb'
+    end
+
+    def page_bindings
+      { index: self }
     end
 
   end

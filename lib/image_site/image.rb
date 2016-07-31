@@ -1,19 +1,36 @@
 require 'fileutils'
+require_relative 'model'
 
 module ImageSite
-  class Image
-    def initialize(file:, number:, index_number:, image_count:)
-      @file = file
-      @number = number
-      @index_number = index_number
-      @image_count = image_count
+  class Image < Model
+    def self.all(options)
+      images = options.files.map.with_index(1) do |file, i|
+        Image.new file: file, number: i, options: options
+      end
+      images.each.with_index do |image, i|
+        if i > 0
+          image.previous = images[i - 1]
+        end
+        if i < images.length - 1
+          image.next = images[i + 1]
+        end
+      end
     end
 
-    # TODO write image inside write_page, move thumbnail to index
-    def write(output_dir)
-      write_image output_dir
-      write_page output_dir
-      write_thumbnail output_dir
+    attr_accessor :next, :previous, :index
+
+    def initialize(number:, file:, options:)
+      super number, options
+      @file = file
+    end
+
+    def write
+      write_scaled_image unqualified_image, 912
+      write_html
+    end
+
+    def unqualified_image
+      "Images/#{@number}.jpeg"
     end
 
     def title
@@ -24,8 +41,16 @@ module ImageSite
       exif.image_description&.gsub "\xE2\x80\xA8".force_encoding('ASCII-8BIT'), "<br/>\n"
     end
 
+    def tags
+      xmp.dc.subject
+    end
+
     def unqualified_page
       "Pages/#{@number}.html"
+    end
+
+    def write_thumbnail
+      write_scaled_image unqualified_thumbnail, 240
     end
 
     def unqualified_thumbnail
@@ -34,22 +59,21 @@ module ImageSite
 
     private
 
-    def write_image(output_dir)
-      write_scaled_image output_dir, 'Images', 912
+    def write_scaled_image(unqualified_name, size)
+      make_subdir File.dirname(unqualified_name)
+      ImageScience.with_image @file do |image|
+        image.thumbnail size do |thumbnail|
+          thumbnail.save "#{@options.output_dir}/#{unqualified_name}"
+        end
+      end
     end
 
-    def write_page(output_dir)
-      Image.make_subdir output_dir, 'Pages'
-      bindings = {
-        number: @number,
-        index_number: @index_number,
-        image_count: @image_count,
-        title: title,
-        description: description,
-        tags: xmp.dc.subject
-      }
-      page = Erubis::Eruby.new(Image.page_template).result bindings
-      IO.write "#{output_dir}/#{unqualified_page}", page
+    def self.page_template
+      @page_template ||= IO.read 'etc/Page.html.erb'
+    end
+
+    def page_bindings
+      { image: self }
     end
 
     def xmp
@@ -58,27 +82,6 @@ module ImageSite
 
     def exif
       @exif ||= EXIFR::JPEG.new @file
-    end
-
-    def self.page_template
-      @page_template ||= IO.read 'etc/Page.html.erb'
-    end
-
-    def write_thumbnail(output_dir)
-      write_scaled_image output_dir, 'Thumbnails', 240
-    end
-
-    def write_scaled_image(output_dir, subdir, size)
-      Image.make_subdir output_dir, subdir
-      ImageScience.with_image @file do |image|
-        image.thumbnail size do |thumbnail|
-          thumbnail.save "#{output_dir}/#{subdir}/#{@number}.jpeg" # TODO use unqualified methods
-        end
-      end
-    end
-
-    def self.make_subdir(output_dir, subdir)
-      FileUtils.mkdir_p "#{output_dir}/#{subdir}"
     end
 
   end
