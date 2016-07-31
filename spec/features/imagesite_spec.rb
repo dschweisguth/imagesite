@@ -38,10 +38,7 @@ feature "Image site generation" do
     # Run this way rather than using system so coverage sees the code.
     # Require the class rather than the executable because require needs .rb and
     # simplecov needs require (not load).
-    ARGV.clear
-    ['-t', 'Site title', '-c', '2', '-r', '2', '-o', output_dir, *photos].each do |arg|
-      ARGV << arg
-    end
+    stub_const 'ARGV', ['-t', 'Site title', '-c', '2', '-r', '2', '-o', output_dir, *photos]
     ImageSite::ImageSite.new.run
   end
 
