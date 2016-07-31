@@ -25,5 +25,4 @@ Capybara.app = -> env { ['200', {}, [IO.read(env['PATH_INFO'])]] }
 require 'simplecov'
 SimpleCov.start
 
-# To make the following work, cd to bin and 'ln -s imagesite imagesite.rb'
-require_relative '../bin/imagesite.rb'
+require_relative '../lib/image_site/image_site'

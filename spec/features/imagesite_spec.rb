@@ -35,12 +35,14 @@ feature "Image site generation" do
   def run_imagesite_with_2x2_indexes_on_5_maximal_photos
     FileUtils.rm_rf output_dir
     photos = Array.new(5, 'spec/features/test-all-metadata.jpeg')
-    system "bin/imagesite -t 'Site title' -c 2 -r 2 -o #{output_dir} #{photos.join ' '}"
+    # Run this way rather than using system so coverage sees the code.
+    # Require the class rather than the executable because require needs .rb and
+    # simplecov needs require (not load).
     ARGV.clear
     ['-t', 'Site title', '-c', '2', '-r', '2', '-o', output_dir, *photos].each do |arg|
       ARGV << arg
     end
-    ImageSite.new.run
+    ImageSite::ImageSite.new.run
   end
 
   def visit_index_page
