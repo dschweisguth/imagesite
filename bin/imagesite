@@ -18,13 +18,19 @@ class ImageSite
   def parse_options!
     @options = { columns: 4, rows: 10 }
     parser = OptionParser.new do |op|
-      op.banner = "Usage: #{$0} -o OUTPUT_DIR file [...]"
+      op.banner = "Usage: #{$0} -t TITLE -o OUTPUT_DIR [other options] file [...]"
 
+      op.on('-t TITLE', "Title of the set of images") do |title|
+        @options[:title] = title
+      end
+      op.on('-c COLUMNS', "The number of columns of thumbnails on each index page") do |columns|
+        @options[:columns] = columns.to_i
+      end
+      op.on('-r ROWS', "The number of rows of photos on each index page") do |rows|
+        @options[:rows] = rows.to_i
+      end
       op.on('-o OUTPUT_DIR', "Output directory") do |output_dir|
         @options[:output_dir] = output_dir
-      end
-      op.on('-t TITLE', "Title") do |title|
-        @options[:title] = title
       end
 
       # -h and --help work by default, but implement them explicitly so they're
@@ -197,6 +203,4 @@ class Index
 
 end
 
-if $0 == __FILE__
-  ImageSite.new.run
-end
+if $0 == __FILE__ then ImageSite.new.run end # one line to evade coverage
