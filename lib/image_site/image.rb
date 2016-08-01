@@ -5,7 +5,7 @@ module ImageSite
   class Image < Model
     def self.all(options)
       images = options.files.map.with_index(1) do |file, i|
-        Image.new file: file, number: i, options: options
+        Image.new i, file, options
       end
       images.each.with_index do |image, i|
         if i > 0
@@ -24,7 +24,7 @@ module ImageSite
 
     attr_accessor :next, :previous, :index
 
-    def initialize(number:, file:, options:)
+    def initialize(number, file, options)
       super number, options
       @file = file
     end
@@ -39,17 +39,17 @@ module ImageSite
     end
 
     def title
-      xmp&.dc&.title&.first
+      xmp && xmp.dc && xmp.dc.title && xmp.dc.title.first
     end
 
     NEWLINE = "\xE2\x80\xA8".force_encoding('ASCII-8BIT')
 
     def description
-      exif.image_description&.gsub NEWLINE, "<br/>\n"
+      exif && exif.image_description && exif.image_description.gsub(NEWLINE, "<br/>\n")
     end
 
     def tags
-      xmp&.dc&.subject || []
+      xmp && xmp.dc && xmp.dc.subject || []
     end
 
     def relative_html

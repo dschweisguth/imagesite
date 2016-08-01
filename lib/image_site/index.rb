@@ -14,13 +14,7 @@ module ImageSite
         images.
         each_slice(options.columns * options.rows).
         with_index(1).
-        map do |images_for_index, i|
-          Index.new(
-            number: i,
-            images: images_for_index,
-            options: options
-          )
-        end
+        map { |images_for_index, i| Index.new(i, images_for_index, options) }
       indexes.each do |index|
         index.indexes = indexes
         index.images.each { |image| image.index = index }
@@ -36,7 +30,7 @@ module ImageSite
     attr_reader :images
     attr_accessor :indexes
 
-    def initialize(number:, images:, options:)
+    def initialize(number, images, options)
       super number, options
       @images = images
     end

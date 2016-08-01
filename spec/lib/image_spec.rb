@@ -28,8 +28,8 @@ describe ImageSite::Image do
       stub_const 'ARGV', ['-t', 'Title', '-o', output_dir, file]
       options = ImageSite::Options.new
       options.parse!
-      image = ImageSite::Image.new number: 1, file: file, options: options
-      index = ImageSite::Index.new number: 1, images: [image], options: options
+      image = ImageSite::Image.new 1, file, options
+      index = ImageSite::Index.new 1, [image], options
       image.index = index
       image
     end

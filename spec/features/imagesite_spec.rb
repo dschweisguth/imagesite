@@ -42,7 +42,7 @@ feature "Image site generation" do
 
   # Specific steps
 
-  def run_imagesite(images:, columns:, rows:, parent_link_text: nil)
+  def run_imagesite(images: nil, columns: nil, rows: nil, parent_link_text: nil)
     FileUtils.rm_rf output_dir
     photos = Array.new(images, 'spec/data/test-all-metadata.jpeg')
     # Run this way rather than using system so coverage sees the code.
