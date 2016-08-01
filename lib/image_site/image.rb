@@ -34,15 +34,17 @@ module ImageSite
     end
 
     def title
-      xmp.dc.title.first
+      xmp&.dc&.title&.first
     end
 
+    NEWLINE = "\xE2\x80\xA8".force_encoding('ASCII-8BIT')
+
     def description
-      exif.image_description&.gsub "\xE2\x80\xA8".force_encoding('ASCII-8BIT'), "<br/>\n"
+      exif.image_description&.gsub NEWLINE, "<br/>\n"
     end
 
     def tags
-      xmp.dc.subject
+      xmp&.dc&.subject || []
     end
 
     def unqualified_page

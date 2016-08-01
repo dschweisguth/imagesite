@@ -23,8 +23,12 @@
     <% end %>					      
   </p>
   <p><img alt="<%= image.title %>" src="../<%= image.unqualified_image %>"/></p>
+  <% if image.title %>
   <h1><%= image.title %></h1>
+  <% end %>
+  <% if image.description %>
   <p><%= image.description %></p>
+  <% end %>
   <% if image.tags.any? %>
     <p>
       <% image.tags.each do |tag| %>
