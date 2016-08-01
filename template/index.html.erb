@@ -29,6 +29,10 @@
       border: 0;
       vertical-align: text-top;
     }
+
+    .parent-link {
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -57,5 +61,8 @@
       </tr>
     <% end %>
   </table>
+  <% if index == index.indexes.last && options.parent_link_text %>
+    <p class="parent-link"><a href="../"><%= options.parent_link_text %></a></p>
+  <% end %>
 </body>
 </html>

@@ -24,6 +24,12 @@ describe ImageSite::Options do
       expect(options.rows).to eq(1)
     end
 
+    it "sets a parent link" do
+      stub_const 'ARGV', %w(-t Title -p Parent -o output image.jpeg)
+      options.parse!
+      expect(options.parent_link_text).to eq('Parent')
+    end
+
     context "watching stderr" do
       class Watcher
         attr_reader :output

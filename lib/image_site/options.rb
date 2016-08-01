@@ -5,12 +5,13 @@ module ImageSite
     DEFAULT_COLUMNS = 4
     DEFAULT_ROWS = 10
 
-    attr_reader :title, :columns, :rows, :output_dir, :files
+    attr_reader :title, :columns, :rows, :parent_link_text, :output_dir, :files
 
     def initialize
       @title = nil
       @columns = DEFAULT_COLUMNS
       @rows = DEFAULT_ROWS
+      @parent_link_text = nil
       @output_dir = nil
     end
 
@@ -26,6 +27,9 @@ module ImageSite
         end
         op.on('-r ROWS', "The number of rows of photos on each index page (default #{DEFAULT_ROWS})") do |rows|
           @rows = rows.to_i
+        end
+        op.on('-p PARENT_LINK_TEXT', "The text of the link to ../ on the last index page") do |parent_link_text|
+          @parent_link_text = parent_link_text
         end
         op.on('-o OUTPUT_DIR', "Output directory") do |output_dir|
           @output_dir = output_dir
