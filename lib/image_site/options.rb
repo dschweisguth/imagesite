@@ -2,11 +2,14 @@ require 'optparse'
 
 module ImageSite
   class Options
+    DEFAULT_COLUMNS = 4
+    DEFAULT_ROWS = 10
+
     attr_reader :title, :columns, :rows, :output_dir, :files
 
     def initialize
-      @columns = 4
-      @rows = 10
+      @columns = DEFAULT_COLUMNS
+      @rows = DEFAULT_ROWS
     end
 
     def parse!
@@ -16,10 +19,10 @@ module ImageSite
         op.on('-t TITLE', "Title of the set of images") do |title|
           @title = title
         end
-        op.on('-c COLUMNS', "The number of columns of thumbnails on each index page") do |columns|
+        op.on('-c COLUMNS', "The number of columns of thumbnails on each index page (default #{DEFAULT_COLUMNS})") do |columns|
           @columns = columns.to_i
         end
-        op.on('-r ROWS', "The number of rows of photos on each index page") do |rows|
+        op.on('-r ROWS', "The number of rows of photos on each index page (default #{DEFAULT_ROWS})") do |rows|
           @rows = rows.to_i
         end
         op.on('-o OUTPUT_DIR', "Output directory") do |output_dir|
