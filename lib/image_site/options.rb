@@ -8,8 +8,10 @@ module ImageSite
     attr_reader :title, :columns, :rows, :output_dir, :files
 
     def initialize
+      @title = nil
       @columns = DEFAULT_COLUMNS
       @rows = DEFAULT_ROWS
+      @output_dir = nil
     end
 
     def parse!
