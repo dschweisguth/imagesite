@@ -22,9 +22,7 @@ feature "Image site generation" do
     follow_link_to 'Next-->'
     page_has_link_to('<--Previous')
 
-    follow_link_to 'Next-->'
-    follow_link_to 'Next-->'
-    follow_link_to 'Next-->'
+    3.times { follow_link_to 'Next-->' }
     page_has_link_to('<--Previous')
     page_has_no_link_to 'Next-->'
 
