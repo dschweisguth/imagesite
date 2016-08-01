@@ -2,7 +2,7 @@ describe ImageSite::Options do
   describe '#parse!' do
     let(:options) { ImageSite::Options.new }
 
-    it "parses valid options" do
+    it "parses minimal valid options" do
       stub_const 'ARGV', %w(-t Title -o output image.jpeg)
       options.parse!
       expect(options.title).to eq('Title')
@@ -10,6 +10,18 @@ describe ImageSite::Options do
       expect(options.rows).to eq(ImageSite::Options::DEFAULT_ROWS)
       expect(options.output_dir).to eq('output')
       expect(options.files).to eq(%w(image.jpeg))
+    end
+
+    it "overrides default columns" do
+      stub_const 'ARGV', %w(-t Title -c 1 -o output image.jpeg)
+      options.parse!
+      expect(options.columns).to eq(1)
+    end
+
+    it "overrides default rows" do
+      stub_const 'ARGV', %w(-t Title -r 1 -o output image.jpeg)
+      options.parse!
+      expect(options.rows).to eq(1)
     end
 
     context "watching stderr" do
