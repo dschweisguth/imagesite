@@ -17,6 +17,11 @@ module ImageSite
       end
     end
 
+    def self.template_name
+      'Page.html.erb'
+    end
+    private_class_method :template_name
+
     attr_accessor :next, :previous, :index
 
     def initialize(number:, file:, options:)
@@ -25,11 +30,11 @@ module ImageSite
     end
 
     def write
-      write_scaled_image unqualified_image, 912
-      write_html
+      write_scaled_image relative_image, 912
+      write_html image: self
     end
 
-    def unqualified_image
+    def relative_image
       "Images/#{@number}.jpeg"
     end
 
@@ -47,15 +52,15 @@ module ImageSite
       xmp&.dc&.subject || []
     end
 
-    def unqualified_page
+    def relative_html
       "Pages/#{@number}.html"
     end
 
     def write_thumbnail
-      write_scaled_image unqualified_thumbnail, 240
+      write_scaled_image relative_thumbnail, 240
     end
 
-    def unqualified_thumbnail
+    def relative_thumbnail
       "Thumbnails/#{@number}.jpeg"
     end
 
@@ -68,14 +73,6 @@ module ImageSite
           thumbnail.save "#{@options.output_dir}/#{unqualified_name}"
         end
       end
-    end
-
-    def self.page_template
-      @page_template ||= IO.read 'etc/Page.html.erb'
-    end
-
-    def page_bindings
-      { image: self }
     end
 
     def xmp

@@ -16,13 +16,13 @@
     <a href="<%= image.previous.number %>.html">&lt;--Previous</a>
     &nbsp;&nbsp;
     <% end %>					      
-    <a href="../<%= image.index.unqualified_page %>">Up</a>
+    <a href="../<%= image.index.relative_html %>">Up</a>
     <% if image.next %>
     &nbsp;&nbsp;
     <a href="<%= image.next.number %>.html">Next--&gt;</a>
     <% end %>					      
   </p>
-  <p><img alt="<%= image.title %>" src="../<%= image.unqualified_image %>"/></p>
+  <p><img alt="<%= image.title %>" src="../<%= image.relative_image %>"/></p>
   <% if image.title %>
   <h1><%= image.title %></h1>
   <% end %>

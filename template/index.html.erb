@@ -39,7 +39,7 @@
         <% if other_index == index %>
           Page <%= other_index.number %>
         <% else %>
-          <a href="<%= other_index.unqualified_page %>">Page <%= other_index.number %></a>
+          <a href="<%= other_index.relative_html %>">Page <%= other_index.number %></a>
         <% end %>
         <% if other_index != index.indexes.last %>|<% end %>
       <% end %>
@@ -50,7 +50,7 @@
       <tr>
         <% row.each do |image| %>
           <td>
-            <a href="<%= image.unqualified_page %>"><img alt="<%= image.title %>" src="<%= image.unqualified_thumbnail %>"></a><br/>
+            <a href="<%= image.relative_html %>"><img alt="<%= image.title %>" src="<%= image.relative_thumbnail %>"></a><br/>
             <%= image.title %>
           </td>
         <% end %>

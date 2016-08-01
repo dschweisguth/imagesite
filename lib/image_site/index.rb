@@ -28,6 +28,11 @@ module ImageSite
     end
     private_class_method :all
 
+    def self.template_name
+      'index.html.erb'
+    end
+    private_class_method :template_name
+
     attr_reader :images
     attr_accessor :indexes
 
@@ -38,21 +43,11 @@ module ImageSite
 
     def write
       images.each(&:write_thumbnail)
-      write_html
+      write_html index: self
     end
 
-    def unqualified_page
+    def relative_html
       "index#{if @number > 1 then @number end}.html"
-    end
-
-    private
-
-    def self.page_template
-      @page_template ||= IO.read 'etc/index.html.erb'
-    end
-
-    def page_bindings
-      { index: self }
     end
 
   end

@@ -6,7 +6,7 @@ describe ImageSite::Image do
     # This is already adequately tested by the acceptance spec, but we need a
     # baseline for the no-metadata example
     it "handles an image with all metadata" do
-      image = create_image('spec/features/test-all-metadata.jpeg')
+      image = create_image('spec/data/test-all-metadata.jpeg')
       image.write
       page = parsed_page image
       h1s = page.css('h1')
@@ -17,7 +17,7 @@ describe ImageSite::Image do
     end
 
     it "handles an image with no metadata" do
-      image = create_image('spec/features/test-no-metadata.jpeg')
+      image = create_image('spec/data/test-no-metadata.jpeg')
       image.write
       page = parsed_page image
       expect(page.css('h1')).to be_empty
@@ -35,7 +35,7 @@ describe ImageSite::Image do
     end
 
     def parsed_page(image)
-      File.open("#{output_dir}/#{image.unqualified_page}") { |file| Nokogiri::XML(file) }
+      File.open("#{output_dir}/#{image.relative_html}") { |file| Nokogiri::XML(file) }
     end
 
   end
