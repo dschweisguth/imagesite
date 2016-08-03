@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name          = 'imagesite'
-  spec.version       = '1.0.0.pre'
+  spec.version       = '1.0.0'
   spec.author        = 'Dave Schweisguth'
   spec.email         = 'dave@schweisguth.org'
 
