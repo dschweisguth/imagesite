@@ -1,4 +1,7 @@
 require 'fileutils'
+require 'image_science'
+require 'xmp'
+require 'exifr'
 require_relative 'model'
 
 module ImageSite

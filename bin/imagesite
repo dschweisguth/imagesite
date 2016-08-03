@@ -1,9 +1,4 @@
 #!/usr/bin/env ruby
-require 'rubygems'
-require 'bundler/setup'
-Bundler.require(:default)
 require_relative '../lib/image_site/image_site'
 
-if $0 == __FILE__
-  ImageSite::ImageSite.new.run
-end
+ImageSite::ImageSite.new.run

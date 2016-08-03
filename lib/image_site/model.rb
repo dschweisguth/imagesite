@@ -1,3 +1,5 @@
+require 'erubis'
+
 module ImageSite
   class Model
     attr_reader :number
