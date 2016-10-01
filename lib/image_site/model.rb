@@ -5,7 +5,8 @@ module ImageSite
     attr_reader :number
 
     def self.template
-      @template ||= IO.read "template/#{template_name}"
+      @template ||= IO.read File.expand_path(
+	"#{File.dirname __FILE__}/../../template/#{template_name}")
     end
 
     def initialize(number, options)
