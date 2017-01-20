@@ -18,11 +18,14 @@ If not, you may be able to install a newer Ruby on your Mac to use with imagesit
 
 ## Installation
 
-If you're using the Ruby that comes with OS X,
+- Install [FreeImage](http://freeimage.sourceforge.net/).
+  The easiest way to do that is probably with [homebrew](http://brew.sh/) or 
+  [MacPorts](https://www.macports.org/).
+- If you're using the Ruby that comes with OS X,
 
-    $ sudo gem install imagesite
+      $ sudo gem install imagesite
 
-If you're using a Ruby that you installed yourself, `sudo` may or may not be appropriate.
+    If you're using a Ruby that you installed yourself, `sudo` may or may not be appropriate.
 
 ## Usage
 
