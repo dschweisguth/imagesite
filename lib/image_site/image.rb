@@ -52,7 +52,7 @@ module ImageSite
     end
 
     def tags
-      xmp && xmp.dc && xmp.dc.subject || []
+      xmp && xmp.dc && xmp.dc.respond_to?(:subject) && xmp.dc.subject || []
     end
 
     def relative_html

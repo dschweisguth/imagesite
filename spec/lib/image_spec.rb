@@ -24,6 +24,10 @@ describe ImageSite::Image do
       expect(page.css('p').any? { |p| p.children.empty? && p.text.empty? }).to be false # i.e. there is no empty description or tags
     end
 
+    it "handles an image with no subject" do
+      expect { create_image('spec/data/test-no-subject.jpeg').write }.to_not raise_error
+    end
+
     def create_image(file)
       stub_const 'ARGV', ['-t', 'Title', '-o', output_dir, file]
       options = ImageSite::Options.new
