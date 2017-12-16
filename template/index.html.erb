@@ -56,6 +56,9 @@
           <td>
             <a href="<%= image.relative_html %>"><img alt="<%= image.title %>" src="<%= image.relative_thumbnail %>"></a><br/>
             <%= image.title %>
+            <% if options.descriptions_on_index_pages %>
+              <br/><%= image.description %>
+            <% end %>
           </td>
         <% end %>
       </tr>
