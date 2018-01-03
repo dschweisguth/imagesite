@@ -42,7 +42,7 @@ module ImageSite
     end
 
     def title
-      xmp && xmp.dc && xmp.dc.title && xmp.dc.title.first
+      xmp && xmp.dc && xmp.dc.respond_to?(:title) && xmp.dc.title && xmp.dc.title.first
     end
 
     NEWLINE = "\xE2\x80\xA8".force_encoding('ASCII-8BIT')

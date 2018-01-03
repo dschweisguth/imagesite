@@ -28,6 +28,10 @@ describe ImageSite::Image do
       expect { create_image('spec/data/test-no-subject.jpeg').write }.to_not raise_error
     end
 
+    it "handles an image with no title" do
+      expect { create_image('spec/data/test-no-title.jpeg').write }.to_not raise_error
+    end
+
     def create_image(file)
       stub_const 'ARGV', ['-t', 'Title', '-o', output_dir, file]
       options = ImageSite::Options.new
