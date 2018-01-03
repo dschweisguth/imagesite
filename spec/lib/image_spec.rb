@@ -4,7 +4,7 @@ describe ImageSite::Image do
     before { FileUtils.rm_rf output_dir }
 
     # This is already adequately tested by the acceptance spec, but we need a
-    # baseline for the no-metadata example
+    # baseline for the other examples
     it "handles an image with all metadata" do
       image = create_image('spec/data/test-all-metadata.jpeg')
       image.write
@@ -25,11 +25,11 @@ describe ImageSite::Image do
     end
 
     it "handles an image with no subject" do
-      expect { create_image('spec/data/test-no-subject.jpeg').write }.to_not raise_error
+      expect(create_image('spec/data/test-no-subject.jpeg').tags).to be_empty
     end
 
     it "handles an image with no title" do
-      expect { create_image('spec/data/test-no-title.jpeg').write }.to_not raise_error
+      expect(create_image('spec/data/test-no-title.jpeg').title).to be_nil
     end
 
     def create_image(file)

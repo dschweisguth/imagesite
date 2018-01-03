@@ -42,7 +42,8 @@ module ImageSite
     end
 
     def title
-      xmp && xmp.dc && xmp.dc.respond_to?(:title) && xmp.dc.title && xmp.dc.title.first
+      title = dc(:title)
+      title && title.first || nil
     end
 
     NEWLINE = "\xE2\x80\xA8".force_encoding('ASCII-8BIT')
@@ -52,7 +53,7 @@ module ImageSite
     end
 
     def tags
-      xmp && xmp.dc && xmp.dc.respond_to?(:subject) && xmp.dc.subject || []
+      dc(:subject) || []
     end
 
     def relative_html
@@ -76,6 +77,10 @@ module ImageSite
           thumbnail.save "#{@options.output_dir}/#{unqualified_name}"
         end
       end
+    end
+
+    def dc(property)
+      xmp && xmp.dc && xmp.dc.respond_to?(property) && xmp.dc.send(property)
     end
 
     def xmp
