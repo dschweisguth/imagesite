@@ -18,7 +18,7 @@ module ImageSite
 
     def parse!
       parser = OptionParser.new do |op|
-        op.banner = "Usage: #{$0} -t TITLE -o OUTPUT_DIR [other options] file [...]"
+        op.banner = "Usage: #{$PROGRAM_NAME} -t TITLE -o OUTPUT_DIR [other options] file [...]"
 
         op.on('-t TITLE', "Title of the set of images") do |title|
           @title = title

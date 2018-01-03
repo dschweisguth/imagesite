@@ -97,7 +97,7 @@ feature "Image site generation" do
   end
 
   def page_has_image_title_description_and_tags
-    expect(page).to have_css(%Q(img[alt="Image title"][src="../Images/1.jpeg"]))
+    expect(page).to have_css(%q(img[alt="Image title"][src="../Images/1.jpeg"]))
     ['Image title', 'Image description', 'Image tag 1', 'Image tag 2'].each do |text|
       expect(page).to have_text(text)
     end
@@ -125,7 +125,7 @@ feature "Image site generation" do
     click_link page
   end
 
-  def has_thumbnail(element, image_number, descriptions_on_index_pages=false)
+  def has_thumbnail(element, image_number, descriptions_on_index_pages = false)
     expect(element).to have_css(%Q(a img[alt="Image title"][src="Thumbnails/#{image_number}.jpeg"]))
     expect(element).to have_text('Image title')
     expect(element.has_text?('Image description')).to eq(descriptions_on_index_pages)
