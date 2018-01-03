@@ -80,7 +80,7 @@ module ImageSite
     end
 
     def dc(property)
-      xmp && xmp.dc && xmp.dc.respond_to?(property) && xmp.dc.send(property)
+      xmp && xmp.respond_to?(:dc) && xmp.dc && xmp.dc.respond_to?(property) && xmp.dc.send(property)
     end
 
     def xmp

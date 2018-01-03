@@ -24,11 +24,17 @@ describe ImageSite::Image do
       expect(page.css('p').any? { |p| p.children.empty? && p.text.empty? }).to be false # i.e. there is no empty description or tags
     end
 
-    it "handles an image with no subject" do
+    it "handles an image with no dc" do
+      image = create_image('spec/data/test-no-dc.jpeg')
+      expect(image.title).to be_nil
+      expect(image.tags).to be_empty
+    end
+
+    it "handles an image with dc but no subject" do
       expect(create_image('spec/data/test-no-subject.jpeg').tags).to be_empty
     end
 
-    it "handles an image with no title" do
+    it "handles an image with dc but no title" do
       expect(create_image('spec/data/test-no-title.jpeg').title).to be_nil
     end
 
