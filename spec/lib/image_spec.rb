@@ -6,7 +6,7 @@ describe ImageSite::Image do
     # This is already adequately tested by the acceptance spec, but we need a
     # baseline for the other examples
     it "handles an image with all metadata" do
-      image = create_image('spec/data/test-all-metadata.jpeg')
+      image = image('test-all-metadata.jpeg')
       image.write
       page = parsed_page image
       h1s = page.css('h1')
@@ -17,7 +17,7 @@ describe ImageSite::Image do
     end
 
     it "handles an image with no metadata" do
-      image = create_image('spec/data/test-no-metadata.jpeg')
+      image = image('test-no-metadata.jpeg')
       image.write
       page = parsed_page image
       expect(page.css('h1')).to be_empty
@@ -25,20 +25,21 @@ describe ImageSite::Image do
     end
 
     it "handles an image with no dc" do
-      image = create_image('spec/data/test-no-dc.jpeg')
+      image = image('test-no-dc.jpeg')
       expect(image.title).to be_nil
       expect(image.tags).to be_empty
     end
 
     it "handles an image with dc but no subject" do
-      expect(create_image('spec/data/test-no-subject.jpeg').tags).to be_empty
+      expect(image('test-no-subject.jpeg').tags).to be_empty
     end
 
     it "handles an image with dc but no title" do
-      expect(create_image('spec/data/test-no-title.jpeg').title).to be_nil
+      expect(image('test-no-title.jpeg').title).to be_nil
     end
 
-    def create_image(file)
+    def image(unqualified_file)
+      file = "spec/data/#{unqualified_file}"
       stub_const 'ARGV', ['-t', 'Title', '-o', output_dir, file]
       options = ImageSite::Options.new
       options.parse!
