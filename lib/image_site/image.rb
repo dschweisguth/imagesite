@@ -49,7 +49,7 @@ module ImageSite
     NEWLINE = "\xE2\x80\xA8".force_encoding('ASCII-8BIT')
 
     def description
-      exif && exif.image_description && exif.image_description.gsub(NEWLINE, "<br/>\n")
+      exif && exif.image_description && exif.image_description.gsub(NEWLINE, "<br/>\n").force_encoding('utf-8')
     end
 
     def tags

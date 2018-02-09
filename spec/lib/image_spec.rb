@@ -38,6 +38,14 @@ describe ImageSite::Image do
       expect(image('test-no-title.jpeg').title).to be_nil
     end
 
+    it "handles an image with a non-UTF-8 description" do
+      expected_description =
+        "The grapes and satyrs in this station refer to the wine town of Rüdesheim am Rhein. " +
+        "It was previously decorated with wine-themed murals, of which a remnant is visible on the left. " +
+        "Most of the panels are now filled with transit-themed graffiti-style murals."
+      expect(image('test-ASCII-8BIT-description.jpeg').description).to eq(expected_description)
+    end
+
     def image(unqualified_file)
       file = "spec/data/#{unqualified_file}"
       stub_const 'ARGV', ['-t', 'Title', '-o', output_dir, file]
