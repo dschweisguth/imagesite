@@ -11,7 +11,7 @@ its title and description.
 
 ## Requirements
 
-imagesite works with Ruby 2.0.0p648, which comes with OS X 10.11 (El Capitan), 
+imagesite works with Ruby 2.3.7, which comes with OS X 10.12 (Sierra), 
 and with later versions of Ruby.
 If your Mac has an older OS X, imagesite may or may not work with its built-in Ruby.
 If not, you may be able to install a newer Ruby on your Mac to use with imagesite.
