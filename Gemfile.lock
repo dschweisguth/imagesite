@@ -37,7 +37,7 @@ GEM
       ast (~> 2.4.0)
     powerpack (0.1.2)
     public_suffix (2.0.5)
-    rack (1.6.12)
+    rack (2.0.8)
     rack-test (0.7.0)
       rack (>= 1.0, < 3)
     rainbow (2.2.2)
@@ -83,7 +83,7 @@ DEPENDENCIES
   capybara (>= 2.16.1)
   imagesite!
   public_suffix (~> 2.0)
-  rack (~> 1.6)
+  rack (~> 2.0)
   rack-test (~> 0.7.0)
   rake (>= 12.3.0)
   rspec (>= 3.7.0)
