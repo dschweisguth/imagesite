@@ -27,10 +27,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop', '0.50.0'
   spec.add_development_dependency 'simplecov', '>= 0.15.1'
 
-  # The following are not directly required by this gem but are directly or indirectly required by capybara.
-  # They are here so they can be constrained to versions compatible with the lowest supported version of Ruby.
-  spec.add_development_dependency 'public_suffix', '~> 2.0'
-  spec.add_development_dependency 'rack', '~> 1.6'
-  spec.add_development_dependency 'rack-test', '~> 0.7.0'
-
 end

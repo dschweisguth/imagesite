@@ -36,9 +36,9 @@ GEM
     parser (2.6.5.0)
       ast (~> 2.4.0)
     powerpack (0.1.2)
-    public_suffix (2.0.5)
-    rack (1.6.12)
-    rack-test (0.7.0)
+    public_suffix (4.0.1)
+    rack (2.0.8)
+    rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rainbow (2.2.2)
       rake
@@ -82,9 +82,6 @@ DEPENDENCIES
   bundler (>= 1.12.5)
   capybara (>= 2.16.1)
   imagesite!
-  public_suffix (~> 2.0)
-  rack (~> 1.6)
-  rack-test (~> 0.7.0)
   rake (>= 12.3.0)
   rspec (>= 3.7.0)
   rubocop (= 0.50.0)
