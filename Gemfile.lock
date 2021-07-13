@@ -13,7 +13,7 @@ GEM
     RubyInline (3.12.5)
       ZenTest (~> 4.3)
     ZenTest (4.12.0)
-    addressable (2.7.0)
+    addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     ast (2.4.2)
     capybara (2.18.0)
@@ -42,7 +42,7 @@ GEM
       rack (>= 1.0, < 3)
     rainbow (2.2.2)
       rake
-    rake (13.0.3)
+    rake (13.0.6)
     rspec (3.10.0)
       rspec-core (~> 3.10.0)
       rspec-expectations (~> 3.10.0)
