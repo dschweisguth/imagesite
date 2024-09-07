@@ -1,6 +1,6 @@
 # imagesite
 
-OS X's iPhoto software had a feature that exported photos to a static web site.
+macOS's iPhoto software had a feature that exported photos to a static web site.
 iPhoto was discontinued in 2015. Its replacement, Photos, does not have that
 feature. imagesite approximates that feature.
 
@@ -11,18 +11,19 @@ its title and description.
 
 ## Requirements
 
-imagesite works with Ruby 2.3.7, which comes with OS X 10.12 (Sierra), 
-and with later versions of Ruby.
-If your Mac has an older OS X, imagesite may or may not work with its built-in Ruby.
-If not, you may be able to install a newer Ruby on your Mac to use with imagesite.
+imagesite is developed and tested on Ruby 2.6.10, which comes with macOS 14 (Sonoma).
+It was previously tested on Ruby 2.3.7, which comes with macOS 10.12 (Sierra).
+If your Mac has an older or newer macOS, imagesite may or may not work with its built-in Ruby.
+If not, you may be able to install a newer or older Ruby on your Mac to use with imagesite.
 
 ## Installation
 
 - Install [FreeImage](http://freeimage.sourceforge.net/).
   The easiest way to do that is probably with [homebrew](http://brew.sh/) or 
   [MacPorts](https://www.macports.org/).
-- If you're using the Ruby that comes with OS X,
+- If you're using the Ruby that comes with macOS,
 
+      $ sudo gem install -v 1.5.11 nokogiri -- --with-cflags="-Wno-incompatible-function-pointer-types -Wno-incompatible-pointer-types-discards-qualifiers -Wno-compound-token-split-by-macro -Wno-int-conversion"
       $ sudo gem install imagesite
 
     If you're using a Ruby that you installed yourself, `sudo` may or may not be appropriate.
