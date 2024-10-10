@@ -43,13 +43,13 @@ module ImageSite
 
     def title
       title = dc(:title)
-      title && title.first || nil
+      title && title.first || nil # title can be false, so we can't use &.
     end
 
     NEWLINE = "\xE2\x80\xA8".force_encoding('ASCII-8BIT')
 
     def description
-      exif && exif.image_description && exif.image_description.gsub(NEWLINE, "<br/>\n").force_encoding('utf-8')
+      exif.image_description && exif.image_description.gsub(NEWLINE, "<br/>\n").force_encoding('utf-8')
     end
 
     def tags
